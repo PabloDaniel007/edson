@@ -31,6 +31,10 @@ Route::POST('editPersona','PersonaController@editPersona');
 Route::POST('deletePersona','PersonaController@deletePersona');
 
 Route::get('Recintos','RecintoController@index');
+Route::get('getRecinto','RecintoController@getRecinto');
+Route::post('addRecinto','RecintoController@addRecinto');
+Route::post('editRecinto','RecintoController@editRecinto');
+Route::post('deleteRecinto','RecintoController@deleteRecinto');
 
 
 Route::get('inicio','CapillaController@index');

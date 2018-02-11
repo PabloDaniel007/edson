@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Recinto;
+use App\Statu;
 use Validator;
 use Response;
 use Illuminate\Support\Facades\Input;
 use App\http\Requests;
 use Illuminate\Http\Request;
+use DB;
 
 class RecintoController extends Controller
 {
@@ -18,54 +20,67 @@ class RecintoController extends Controller
      */
     public function index()
     {
-        $recinto = Recinto::paginate(4);
-        return view('recintos.recinto',compact('recinto'));
+        $status = Statu::all();
+        return view('recintos.recinto',['status' => $status]);
     }
 
+    public function getRecinto()
+    {
+        $recintos = DB::table('recintos')
+        ->join('status', 'status.id', '=', 'recintos.status_id')
+        ->select('recintos.id', 'recintos.nombre', 'recintos.activo', 'status.statu')
+        ->get();
+        foreach ($recintos as $value) {
+            $arreglo["data"][]=$value;
+        }
+        return Response::json($arreglo);
+    }
+
+
     public function addRecinto(Request $request){
+
+        $activo =0;
+        if ($request->activo) {
+            $activo = 1;
+        }
+
         $recin = array(
             'nombre' => 'required',
-            'activo' => 'requered',
             'statu_id' => 'required'
 
-        );
+            );
 
-        $validatos = Validator::make ( Input::all(), $recin);
+        $validator = Validator::make (Input::all(), $recin);
         if ($validator->fails())
-            return Response::json(array('erros' => $validator->getMessageBag()->toarray()));
-
+            return redirect()->back()->withErrors($validator->erros());
+            //return Response::json(array('erros' => $validator->getMessageBag()->toarray()));
         else{
-            $recin = new Recinto;
+            $recin = new Recinto();
             $recin->nombre = $request->nombre;
-            $recin->activo = $request->activo;
-            $recin->statu_id = $request->statu_id;
+            $recin->activo = $activo;
+            $recin->status_id = $request->statu_id;
             $recin->save();
-            return response()->json($recin);
+            return redirect()->back();
         }
 
     }
 
     public function editRecinto(request $request){
-        $recin = Recinto::find ($request->id);
-        $recin->nombre = $request->nombre;
-        $recin->activo = $request->activo;
-        $recin->statu_id = $request->statu_id;
-        $recin->save();
-        return response()->json($recin);
+       $activo =0;
+       if ($request->activo_edit) {
+        $activo = 1;
     }
+    $recin = Recinto::find($request->id_edit);
+    $recin->nombre = $request->nombre_edit;
+    $recin->activo = $activo;
+    $recin->status_id = $request->statu_id_edit;
+    $recin->save();
+    return redirect()->back();
+}
 
-    public function deleteRecinto(Request $request){
-        $recin = Recinto::find ($request->id)->delete();
-        return response()->json();
-    }
+public function deleteRecinto(Request $request){
+    $recin = Recinto::find ($request->id_delete)->delete();
+    return redirect()->back();
+}
 
-    public function MostrarRecinto(Request $request){
-
-        DB::table('recintos')
-        ->join('statu','id', '=', 'status_id')
-        ->join('orders', 'id', '=' 'status_id')
-        ->select('status_id', 'statu')
-        ->get();
-    }
-    
 }

@@ -92,7 +92,8 @@
           </div>
     </div>
   </div>
-</div></div>
+</div>
+</div>
 {{-- Ventana modal de mostrar --}}
 <div id="show" class="modal fade" role="dialog">
   <div class="modal-dialog">

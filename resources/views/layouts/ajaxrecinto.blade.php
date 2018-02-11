@@ -84,7 +84,7 @@
                     <li class="user-footer">
 
                       <div class="pull-right">
-                        <a href="{{ action('CapillaController@session_destroy') }}" class="btn btn-default btn-flat">Cerrar Sesion</a>
+                        <a href="{{ action('InicioController@session_destroy') }}" class="btn btn-default btn-flat">Cerrar Sesion</a>
                       </div>
                     </li>
                   </ul>

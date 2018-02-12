@@ -54,7 +54,7 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- <small class="bg-black">Online</small> -->
-                  <span class="hidden-xs">{{session()->get('name_user')}}</span>
+                  <span class="hidden-xs">{{session()->get('usuario')}}</span>
                   <i class="fas fa-cogs"></i>
                 </a>
                 <ul class="dropdown-menu">

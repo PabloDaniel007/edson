@@ -39,7 +39,7 @@ class InicioController extends Controller
      		$data_user = Usuario::select(DB::raw("usuario, contrasena"))->where('usuario','=',$request->user)->where('contrasena','=',$request->pass)->first();
 
             //Se crea la session con las variables necesarias
-     		session(['name_user' => $data_user->nombre, 'usuario' => $data_user->usuario, 'contrasena' => $data_user->contrasena]);
+     		session(['usuario' => $data_user->usuario, 'contrasena' => $data_user->contrasena]);
 
            // Obtener y mandar a la vista toda la informacion de los usuarios registrados en el sistema
      		$resultado = Usuario::where('usuario','<>',$request->user)->where('contrasena','<>',$request->pass)->get();
